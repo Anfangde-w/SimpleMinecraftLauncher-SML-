@@ -24,10 +24,37 @@
     <ClCompile Include="classpath.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="console_ui.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="file_util.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="java_scan.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="java_select.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="launch.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main_menu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="platform_rules.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="text_util.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_list.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="version_scan.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="version_select.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\cJson\cJSON.c">
@@ -51,6 +78,33 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="launch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="main_menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="console_ui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="platform_rules.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="text_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_list.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="version_scan.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="version_select.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="java_scan.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="java_select.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

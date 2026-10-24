@@ -8,10 +8,11 @@
 void launch_game(LauncherConfig* config) {
     char final_cmd[2048];
     // "" 用于防止路径带空格报错
-    sprintf(final_cmd, "\"\"%s\" @args.txt\"", config->java_path);
+    snprintf(final_cmd, sizeof(final_cmd), "\"\"%s\" @args.txt\"", config->java_path);
 
     printf("\n=== 正在启动 Minecraft %s ===\n", config->version);
     printf("如果游戏崩溃，请看下方日志：\n\n");
 
+    fflush(stdout);
     system(final_cmd);
 }

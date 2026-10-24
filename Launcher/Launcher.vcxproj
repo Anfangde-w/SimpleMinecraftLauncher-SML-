@@ -144,17 +144,35 @@
     <ClCompile Include="..\cJson\cJSON.c" />
     <ClCompile Include="args.c" />
     <ClCompile Include="classpath.c" />
+    <ClCompile Include="console_ui.c" />
     <ClCompile Include="file_util.c" />
+    <ClCompile Include="java_scan.c" />
+    <ClCompile Include="java_select.c" />
     <ClCompile Include="launch.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="main_menu.c" />
+    <ClCompile Include="platform_rules.c" />
+    <ClCompile Include="text_util.c" />
+    <ClCompile Include="ui_list.c" />
+    <ClCompile Include="version_scan.c" />
+    <ClCompile Include="version_select.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\cJson\cJSON.h" />
     <ClInclude Include="args.h" />
     <ClInclude Include="classpath.h" />
+    <ClInclude Include="console_ui.h" />
     <ClInclude Include="file_util.h" />
+    <ClInclude Include="java_scan.h" />
+    <ClInclude Include="java_select.h" />
     <ClInclude Include="launch.h" />
     <ClInclude Include="launcher_config.h" />
+    <ClInclude Include="main_menu.h" />
+    <ClInclude Include="platform_rules.h" />
+    <ClInclude Include="text_util.h" />
+    <ClInclude Include="ui_list.h" />
+    <ClInclude Include="version_scan.h" />
+    <ClInclude Include="version_select.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

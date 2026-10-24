@@ -7,40 +7,12 @@
 #include "cJSON.h"
 #include "launcher_config.h"
 #include "file_util.h"
+#include "platform_rules.h"
 #include "classpath.h"
 
 #define CLASSPATH_MAX 65536
 
 // ================= 3. 核心逻辑模块 =================
-
-// 判断一条 rule 是否适用于当前环境（Windows x64，未启用任何 feature）
-static bool rule_matches(cJSON* rule) {
-    cJSON* os = cJSON_GetObjectItemCaseSensitive(rule, "os");
-    if (os) {
-        cJSON* name = cJSON_GetObjectItemCaseSensitive(os, "name");
-        cJSON* arch = cJSON_GetObjectItemCaseSensitive(os, "arch");
-        if (cJSON_IsString(name) && strcmp(name->valuestring, "windows") != 0) return false;
-        if (cJSON_IsString(arch) && strcmp(arch->valuestring, "x86_64") != 0) return false;
-    }
-    // 带 features 的规则一律不匹配（本启动器不支持 demo / 自定义分辨率等）
-    if (cJSON_GetObjectItemCaseSensitive(rule, "features")) return false;
-    return true;
-}
-
-// 按 version json 的 rules 判断这个库要不要用：最后一条匹配的规则生效，默认不允许
-static bool rules_allow(cJSON* lib) {
-    cJSON* rules = cJSON_GetObjectItemCaseSensitive(lib, "rules");
-    if (!cJSON_IsArray(rules)) return true;
-
-    bool allow = false;
-    cJSON* rule = NULL;
-    cJSON_ArrayForEach(rule, rules) {
-        if (!rule_matches(rule)) continue;
-        cJSON* action = cJSON_GetObjectItemCaseSensitive(rule, "action");
-        allow = cJSON_IsString(action) && strcmp(action->valuestring, "allow") == 0;
-    }
-    return allow;
-}
 
 // 1.21.3 里 natives 是名字带 :natives-windows 的独立库（x64/arm64/x86 三种）
 static bool is_native_any(const char* name) {
