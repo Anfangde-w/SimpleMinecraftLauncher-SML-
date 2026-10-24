@@ -27,7 +27,19 @@
     <ClCompile Include="console_ui.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="download_game.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="download_menu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="download_progress.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="file_util.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="http_client.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="java_scan.c">
@@ -39,10 +51,16 @@
     <ClCompile Include="launch.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="launcher_settings.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="main_menu.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="platform_rules.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sha1_util.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="text_util.c">
@@ -68,6 +86,9 @@
     <ClInclude Include="launcher_config.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="launcher_settings.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="file_util.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -78,12 +99,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="launch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="main_menu.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="console_ui.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="platform_rules.h">
@@ -105,6 +120,27 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="java_select.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="main_menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="console_ui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="http_client.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sha1_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="download_game.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="download_menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="download_progress.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

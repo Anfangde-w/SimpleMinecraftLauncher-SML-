@@ -112,12 +112,13 @@ static int run_text(const UiList* list) {
         free(s);
     }
 
-    printf("\n输入编号 [1-%d]（直接回车 = %d）: ", list->count, list->start + 1);
+    printf("\n输入编号 [1-%d]（0 = 取消，回车 = %d）: ", list->count, list->start + 1);
     fflush(stdout);
 
-    if (!fgets(line, sizeof(line), stdin)) return list->start;
+    if (!fgets(line, sizeof(line), stdin)) return -1;
     n = atoi(line);
-    if (n < 1 || n > list->count) return list->start;
+    if (n == 0) return -1;
+    if (n < 0 || n > list->count) return list->start;
     return n - 1;
 }
 

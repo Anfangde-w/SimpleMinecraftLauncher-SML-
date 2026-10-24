@@ -16,6 +16,8 @@
 #include "java_select.h"
 #include "main_menu.h"
 #include "console_ui.h"
+#include "download_menu.h"
+#include "launcher_settings.h"
 
 static VersionEntry g_versions[VERSION_MAX];
 static JavaEntry g_java[JAVA_MAX];
@@ -26,6 +28,7 @@ static int g_version_count = 0;
 static int g_version_index = 0;
 static int g_java_count = 0;
 static int g_java_index = 0;
+static LauncherSettings g_settings;
 
 static int find_version_index(VersionEntry* list, int count, const char* id) {
     int i;
@@ -85,11 +88,16 @@ static int rescan_versions(LauncherConfig* config, const char* prefer_id) {
     return 1;
 }
 
-// 重新扫描 Java；优先保持当前 exe
+// 重新扫描 Java；优先保持当前 exe，其次用配置里持久化的路径
 static void rescan_java(LauncherConfig* config, int required) {
     char keep[1024] = "";
 
-    if (g_java_valid) snprintf(keep, sizeof(keep), "%s", g_current_java.exe);
+    if (g_java_valid) {
+        snprintf(keep, sizeof(keep), "%s", g_current_java.exe);
+    }
+    else if (config->java_path && config->java_path[0]) {
+        snprintf(keep, sizeof(keep), "%s", config->java_path);
+    }
 
     g_java_count = java_scan(g_java, JAVA_MAX, required);
     g_java_index = keep[0] ? find_java_index(g_java, g_java_count, keep) : -1;
@@ -113,6 +121,20 @@ static void build_java_display(char* out, size_t cap) {
     else {
         snprintf(out, cap, "未检测到（将使用默认路径）");
     }
+}
+
+// 把当前版本 / Java / 菜单位置写回 launcher.cfg
+static void persist_settings(LauncherConfig* config) {
+    char version[128];
+    char java_path[1024];
+
+    snprintf(version, sizeof(version), "%s", config->version ? config->version : "");
+    snprintf(java_path, sizeof(java_path), "%s", config->java_path ? config->java_path : "");
+
+    snprintf(g_settings.version, sizeof(g_settings.version), "%s", version);
+    snprintf(g_settings.java_path, sizeof(g_settings.java_path), "%s", java_path);
+
+    settings_save(config->mc_dir, &g_settings);
 }
 
 static int start_game(LauncherConfig* config) {
@@ -199,6 +221,11 @@ int main(void) {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleTitleW(L"Minecraft Launcher v0.1");
 
+    settings_defaults(&g_settings);
+    settings_load(config.mc_dir, &g_settings);
+    if (g_settings.version[0]) config.version = g_settings.version;
+    if (g_settings.java_path[0]) config.java_path = g_settings.java_path;
+
     printf("正在扫描游戏版本与 Java...\n");
 
     if (!rescan_versions(&config, config.version)) {
@@ -219,7 +246,8 @@ int main(void) {
         status.login_mode = "离线";
         status.username = config.username;
 
-        action = main_menu_run(&status);
+        action = main_menu_run(&status, &g_settings.main_menu_index);
+        persist_settings(&config);
 
         if (action == MENU_EXIT) break;
 
@@ -254,6 +282,7 @@ int main(void) {
                 printf("当前 Java 不满足该版本要求，正在重新检测...\n");
                 rescan_java(&config, required_java);
             }
+            persist_settings(&config);
             continue;
         }
 
@@ -268,7 +297,14 @@ int main(void) {
                 g_current_java = chosen;
                 g_java_valid = 1;
                 config.java_path = g_current_java.exe;
+                persist_settings(&config);
             }
+            continue;
+        }
+
+        if (action == MENU_DOWNLOAD) {
+            download_menu_run(&config, &g_settings);
+            persist_settings(&config);
             continue;
         }
 
