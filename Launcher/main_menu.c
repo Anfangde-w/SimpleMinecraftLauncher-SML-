@@ -9,7 +9,7 @@
 #include "text_util.h"
 
 #define LINE_MAX 1024
-#define ITEM_COUNT 6
+#define ITEM_COUNT 7
 
 // 6 行高的 SML 点阵，绘制时逐行缩进，形成斜体效果
 static const wchar_t* BANNER[6] = {
@@ -27,23 +27,25 @@ static const wchar_t* ITEM_LABELS[ITEM_COUNT] = {
     L"开始游戏",
     L"版本选择",
     L"环境配置",
+    L"下载游戏",
     L"更多设置",
     L"关于",
     L"退出"
 };
 
 static const wchar_t* ITEM_KEYS[ITEM_COUNT] = {
-    L"1", L"2", L"3", L"4", L"5", L"0"
+    L"1", L"2", L"3", L"4", L"5", L"6", L"0"
 };
 
 static const char* ITEM_KEYS_NARROW[ITEM_COUNT] = {
-    "1", "2", "3", "4", "5", "0"
+    "1", "2", "3", "4", "5", "6", "0"
 };
 
 static const MenuAction ITEM_ACTIONS[ITEM_COUNT] = {
     MENU_START_GAME,
     MENU_SELECT_VERSION,
     MENU_SELECT_JAVA,
+    MENU_DOWNLOAD,
     MENU_MORE,
     MENU_ABOUT,
     MENU_EXIT
@@ -160,7 +162,7 @@ static void draw_menu(const MenuStatus* status, int sel) {
     free(user);
 }
 
-static MenuAction run_text(const MenuStatus* status) {
+static MenuAction run_text(const MenuStatus* status, int* cursor) {
     char line[64];
     int i;
 
@@ -186,28 +188,39 @@ static MenuAction run_text(const MenuStatus* status) {
 
     for (;;) {
         int n;
-        printf("\n选择 [0-5]（回车默认 1）: ");
+        int index = -1;
+        printf("\n选择 [0-6]（回车默认 1）: ");
         fflush(stdout);
         if (!fgets(line, sizeof(line), stdin)) return MENU_EXIT;
         n = atoi(line);
         if (line[0] == '\n' || line[0] == '\r') n = 1;
         switch (n) {
-        case 0: return MENU_EXIT;
-        case 1: return MENU_START_GAME;
-        case 2: return MENU_SELECT_VERSION;
-        case 3: return MENU_SELECT_JAVA;
-        case 4: return MENU_MORE;
-        case 5: return MENU_ABOUT;
+        case 0: index = ITEM_COUNT - 1; break;
+        case 1: index = 0; break;
+        case 2: index = 1; break;
+        case 3: index = 2; break;
+        case 4: index = 3; break;
+        case 5: index = 4; break;
+        case 6: index = 5; break;
         default: break;
+        }
+        if (index >= 0) {
+            if (cursor && index != ITEM_COUNT - 1) *cursor = index;
+            return ITEM_ACTIONS[index];
         }
     }
 }
 
-MenuAction main_menu_run(const MenuStatus* status) {
+MenuAction main_menu_run(const MenuStatus* status, int* cursor) {
     int sel = 0;
 
     if (!status) return MENU_EXIT;
-    if (!console_is_interactive()) return run_text(status);
+    if (!console_is_interactive()) return run_text(status, cursor);
+
+    if (cursor) {
+        sel = *cursor;
+        if (sel < 0 || sel >= ITEM_COUNT - 1) sel = 0;
+    }
 
     console_hide_cursor(1);
     console_clear();
@@ -235,11 +248,11 @@ MenuAction main_menu_run(const MenuStatus* status) {
             sel = ITEM_COUNT - 1;
             break;
         }
-        else if (vk >= '1' && vk <= '5') {
+        else if (vk >= '1' && vk <= '6') {
             sel = vk - '1';
             break;
         }
-        else if (vk >= VK_NUMPAD1 && vk <= VK_NUMPAD5) {
+        else if (vk >= VK_NUMPAD1 && vk <= VK_NUMPAD6) {
             sel = vk - VK_NUMPAD1;
             break;
         }
@@ -247,6 +260,8 @@ MenuAction main_menu_run(const MenuStatus* status) {
 
     console_hide_cursor(0);
     console_clear();
+
+    if (cursor && sel != ITEM_COUNT - 1) *cursor = sel;
 
     return ITEM_ACTIONS[sel];
 }
